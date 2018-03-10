@@ -1,0 +1,11 @@
+*.pyc
+*~
+__pycache__
+/static
+*.log
+*.pot
+/gforum/setting.py
+setting.py
+/backup
+/forum/Hlam
+

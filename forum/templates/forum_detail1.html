@@ -1,0 +1,31 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Title: {{ forum.title }}</h1>
+
+  <p><strong>Title:</strong> <a href="">{{ forum.title }}</a></p>
+  <p><strong>Category:</strong> {{ forum.category }}</p>
+  <p><strong>Created :</strong> {{ forum.created }}</p>
+  <p><strong>Description :</strong> {{ forum.description }}</p>
+  <p><strong>Creator :</strong> {{ forum.creator }}</p>
+
+  <div style="margin-left:20px;margin-top:20px">
+    <p><strong>Тем в форуме:</strong> {{ num_topic_for_forum }}</p>
+
+{% if list_topic %}
+    <ul>
+
+      {% for topic in list_topic %}
+      <li>
+        <a href="{{ topic.get_absolute_url }}">{{ topic.title }}
+        </a> ({{topic.forum}})
+      </li>
+      {% endfor %}
+
+    </ul>
+    {% else %}
+      <p>There are no topic in the Forum.</p>
+    {% endif %}
+
+  </div>
+{% endblock %}

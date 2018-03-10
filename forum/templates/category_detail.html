@@ -1,0 +1,29 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Title: {{ category.name }}</h1>
+
+  <p><strong>Name:</strong> <a href="{{ category.get_absolute_url }}">{{ category.name }}</a></p>
+  <p><strong>Description :</strong> {{ category.description }}</p>
+
+{% endblock %}
+
+ <!--
+     <h1>Forum List</h1>
+    <p><strong>Forums:</strong>
+ {{ num_forum_for_category }}</p>
+
+{% if list_forum %}
+    <ul>
+
+      {% for forum in list_forum %}
+      <li>
+        <a href="{{ forum.get_absolute_url }}">{{ forum.title }}
+        </a> ({{forum.category}})
+      </li>
+      {% endfor %}
+
+    </ul>
+    {% else %}
+      <p>There are no forum in the Forum.</p>
+    {% endif %}   -->

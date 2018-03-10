@@ -1,0 +1,20 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <h1>Forum List</h1>
+
+    {% if forum_list %}
+    <ul>
+
+      {% for forum in forum_list %}
+      <li>
+        <a href="{{ forum.get_absolute_url }}">{{ forum.title }}
+        </a> ({{forum.category}})
+      </li>
+      {% endfor %}
+
+    </ul>
+    {% else %}
+      <p>There are no forum in the Forum.</p>
+    {% endif %}
+{% endblock %}
