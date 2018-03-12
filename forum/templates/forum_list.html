@@ -8,7 +8,7 @@
 
       {% for forum in forum_list %}
       <li>
-        <a href="{{ forum.get_absolute_url }}">{{ forum.title }}
+        <a href="{{ forum.get_absolute_url }}/topics ">{{ forum.title }}
         </a> ({{forum.category}})
       </li>
       {% endfor %}
@@ -18,3 +18,5 @@
       <p>There are no forum in the Forum.</p>
     {% endif %}
 {% endblock %}
+
+topic.post_set.all.count

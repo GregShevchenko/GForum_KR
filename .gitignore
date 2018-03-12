@@ -4,7 +4,7 @@ __pycache__
 /static
 *.log
 *.pot
-/gforum/setting.py
+/gforum/settings.py
 setting.py
 /backup
 /forum/Hlam

@@ -3,12 +3,19 @@
 {% block content %}
     <h1>Post List</h1>
 
-    {% if post.category.post_set.all %}
+   <div style="margin-left:20px;margin-top:20px">
+    <p><strong>Сообщений в теме:</strong> ({{topic.post_set.all.count}})</p>
+
+
+
+  </div>
+
+    {% if post_list %}
     <ul>
 
-      {% for forum in post.category.post_set.all%}
+      {% for post in post_list%}
       <li>
-        <a href="{{ post.get_absolute_url }}">{{ post.title }}
+        <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
         <p>Создан: {{ post.created }}</p>
         <p>изменен: {{ post.updated }}</p>
         <p>Автор: {{ post.creator }}</p>
@@ -18,7 +25,8 @@
 
     </ul>
     {% else %}
-      <p>There are no post in the Forum.</p>
+      <p>There are no post in the Topic.</p>
     {% endif %}
 {% endblock %}
 
+<!--   <p><a href="{% url 'post_add' pk=self.topic %}"  class="top-menu">Добавить сообщение:</a></p>-->

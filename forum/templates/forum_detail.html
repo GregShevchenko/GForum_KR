@@ -10,8 +10,10 @@
   <p><strong>Creator :</strong> {{ forum.creator }}</p>
 
   <div style="margin-left:20px;margin-top:20px">
-    <p><strong>Тем в форуме:</strong> {{ num_topic_for_forum }}</p>
+    <p><strong>Тем в форуме:</strong> {{forum.topic_set.all.count}}</p>
+{% endblock %}
 
+<!--
 {% if list_topic %}
     <ul>
 
@@ -28,4 +30,4 @@
     {% endif %}
 
   </div>
-{% endblock %}
+-->

@@ -9,6 +9,59 @@
   <p><strong>Creator :</strong> {{ topic.creator }}</p>
 
   <div style="margin-left:20px;margin-top:20px">
+    <p><strong>Сообщений в теме:</strong> ({{topic.post_set.all.count}})</p>
+<p><a href="{% url 'post_add' pk=topic.id %}"  class="top-menu">Добавить сообщение:</a></p>
+
+{% if post_list %}
+    <ul>
+      {% for post in post_list %}
+      <li>
+        <h1><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h1>
+        <p>Создан: {{ post.created }}</p>
+        <p>изменен: {{ post.updated }}</p>
+        <p>Автор: {{ post.creator }}</p>
+        <p>{{ post.content|linebreaksbr }}</p>
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+      <p>There are no post in the Topic.</p>
+{% endif %}
+  </div>
+{% endblock %}
+   {% block pagination %}
+    {% if is_paginated %}
+        <div class="pagination">
+                <span class="page-links">
+                {% if page_obj.has_previous %}
+                    <a href="{{ request.path }}?page={{ page_obj.previous_page_number }}">previous</a>
+                {% endif %}
+                <span class="page-current">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                </span>
+                {% if page_obj.has_next %}
+                    <a href="{{ request.path }}?page={{ page_obj.next_page_number }}">next</a>
+                {% endif %}
+                </span>
+            </div>
+       {% endif %}
+    {% endblock %}
+
+<!--<p><a href="{% url 'post_add' pk=topic.id %}"  class="top-menu">Добавить сообщение:</a></p>
+   {% if is_paginated %}
+       {% endif %}-->
+
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Title: {{ topic.title }}</h1>
+
+  <p><strong>Title:</strong> <a href="">{{ topic.title }}</a></p>
+  <p><strong>Forum:</strong> {{ topic.forum }}</p>
+  <p><strong>Created :</strong> {{ topic.created }}</p>
+  <p><strong>Creator :</strong> {{ topic.creator }}</p>
+
+  <div style="margin-left:20px;margin-top:20px">
     <p><strong>Сообщений в теме:</strong> {{ num_post_for_topic }}</p>
     <p><a href="{% url 'post_add' pk=topic.id %}"  class="top-menu">Добавить сообщение:</a></p>
 {% if list_post1 %}
