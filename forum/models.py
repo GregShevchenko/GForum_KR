@@ -51,7 +51,7 @@ class Forum(models.Model):
 
 class Topic(models.Model):
     title = models.CharField(max_length=60)
-#    description = models.TextField(max_length=10000, blank=False, null=True)
+    description = models.TextField(max_length=10000, blank=False, null=True)
     forum = models.ForeignKey(Forum,
         on_delete=models.SET_NULL, blank=True, null=True)
     updated = models.DateTimeField(auto_now=True)

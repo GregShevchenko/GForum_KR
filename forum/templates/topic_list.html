@@ -3,6 +3,12 @@
 {% block content %}
     <h1>Topic List</h1>
 
+    <div style="margin-left:20px;margin-top:20px">
+    <p><strong>Всего форумов:</strong> ({{ num_topic_for_forum }})</p>
+    </div>
+       <p><a href="{% url 'topic_add' pk=id_forum %}"
+       class="top-menu">Добавить тему:</a></p>
+
     {% if topic_list %}
     <ul>
 
@@ -18,3 +24,9 @@
       <p>There are no topic in the Forum.</p>
     {% endif %}
 {% endblock %}
+
+
+<!--<p><a href="{% url 'topic_add' pk=forum.id %}"
+       <p><a href="{% url 'topic_add' pk=forum.id %}"
+       class="top-menu">Добавить сообщение:</a></p>
+-->
