@@ -100,15 +100,12 @@ class Post(models.Model):
         return self.title
 
     def get_absolute_url(self):
-#        from django.urls import reverse
-        """
-        Returns the url to access a particular book instance.
-        """
+#        return reverse('post-detail', kwargs={'pk':self.id})
+#        return reverse('post-detail', kwargs={'pk':self.topic.id, 'post_pk':self.id})
         return reverse('post-detail', args=[str(self.id)])
 #        return reverse('topic-detail', kwargs={'pk':self.id})
 #        return reverse('post-detail', args=[self.pk])#(), kwargs = {'pk': self.pk}))
 
-        #args=[str(self.id)],
 
 
 

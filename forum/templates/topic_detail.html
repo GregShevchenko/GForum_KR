@@ -10,11 +10,11 @@
 
   <div style="margin-left:20px;margin-top:20px">
     <p><strong>Сообщений в теме:</strong> ({{topic.post_set.all.count}})</p>
-   <p><a href="{% url 'post_add' pk=topic.id %}"
+    <p><a href="{% url 'post_add' pk=topic.id %}"
        class="top-menu">Добавить сообщение:</a></p>
-   <p><a href="{% url 'topic_update' pk=topic.id %}"
+    <p><a href="{% url 'topic_update' pk=topic.id %}"
        class="top-menu">Редактировать тему:</a></p>
-
+    <p>{{ topic.description|linebreaksbr }}</p>
   </div>
 {% endblock %}
 

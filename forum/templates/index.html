@@ -11,17 +11,40 @@
 <body>
 
 {% block content %}
-<h1>GR Forum Home</h1>
-<p>Welcome to <em>GR Forum</em>, a very basic Django website developed as a tutorial example on the Mozilla Developer Network.</p>
-<h2>Статистика форума:</h2>
+    <div class="wrap">
+        <div class="ad">
+            <p>Welcome to <em>GR Forum</em>,
+            a very basic Django website developed as a tutorial example on the
+            Mozilla Developer Network.</p>
+        </div> <!-- <div class="ad"> -->
+
+
+    <h2 class="topic-title">Добро пожаловать на GRForum</h2>
+        <div class="main">
+                            <div class="sidebar-info">
+                            <div class="sidebar-info-title">
+                                Статистика форума:
+                                </div>
+                            <p><strong>Категорий:</strong> {{ num_category }}</p>
+                            <p><strong>Форумов:</strong> {{ num_forum }}</p>
+                            <p><strong>Тем:</strong> {{ num_topic }}</p>
+                            <p><strong>Сообщений:</strong> {{ num_post }}</p>
+                            <p>Вы посещали данную страницу {{ num_visits }}
+                                {% if num_visits == 2 or num_visits == 3 or num_visits == 4%}
+                                раза{% else %} раз{% endif %}.
+                                </p>
+                                </div> <!-- <div class="sidebar-info"> -->
+        </div> <!-- <div class="main"> -->
+
+<!--<h2>Статистика форума:</h2>
   <ul>
     <li><strong>Категорий:</strong> {{ num_category }}</li>
     <li><strong>Форумов:</strong> {{ num_forum }}</li>
     <li><strong>Тем:</strong> {{ num_topic }}</li>
     <li><strong>Сообщений:</strong> {{ num_post }}</li>
+  </ul>-->
+    </div> <!-- <div class="wrap"> -->
 
-
-  </ul>
 {% endblock %}
 
 </body>

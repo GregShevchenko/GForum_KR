@@ -3,6 +3,7 @@ from django.views import generic
 from django.shortcuts import get_object_or_404
 #from .forms import PostForm
 from .models import Category, Forum, Topic, Post
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 def index(request):
     """
@@ -13,12 +14,15 @@ def index(request):
     num_forum=Forum.objects.all().count()
     num_topic=Topic.objects.all().count()
     num_post=Post.objects.all().count()
+        # Number of visits to this view, as counted in the session variable.
+    num_visits=request.session.get('num_visits', 0)
+    request.session['num_visits'] = num_visits+1
     # Отрисовка HTML-шаблона index.html с данными внутри переменной контекста context
     return render(
         request,
         'index.html',
-        context={'num_category':num_category, 'num_forum':num_forum,
-            'num_topic':num_topic, 'num_post':num_post}
+        context={'num_category': num_category, 'num_forum': num_forum,
+            'num_topic': num_topic, 'num_post': num_post, 'num_visits': num_visits}
     )
 
 
@@ -91,64 +95,93 @@ class PostListView(generic.ListView):
         self.topic = get_object_or_404(Topic, id=self.kwargs['pk'])
         return Post.objects.filter(topic=self.topic)
 
+    def get_context_data(self, **kwargs):
+        context = super(PostListView, self).get_context_data(**kwargs)
+        self.topic = get_object_or_404(Topic, id=self.kwargs['pk'])
+        context['topic_descript'] = self.topic.description
+        context['num_post_for_topic'] = Post.objects.filter(topic_id=self.kwargs['pk']).count()
+        context['id_topic'] = self.kwargs['pk']
+        return context
+
 
 class PostDetailView(generic.DetailView):
     model = Post
     template_name = 'post_detail.html'
 
+    def get_object(self):
+        return get_object_or_404(Post, pk=self.kwargs.get("pk"))
+
+
 from django.http import HttpResponseRedirect
 from .forms import PostForm, TopicForm
-
-
-
-def post_add(request, pk):
-    topic = get_object_or_404(Topic, pk = pk)
-    form = PostForm()
-    if request.method == 'POST':
-        form = PostForm(request.POST)
-        if form.is_valid():
-            post = form.save(commit=False)
-            post.topic = topic
-            post.creator = request.user
-            post.save()
-        return HttpResponseRedirect('/forum/topic/%s' % pk)
-    return render(request, 'post_add.html', {'form': form})
-
-
 
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.core.urlresolvers import reverse_lazy
 
-class TopicCreate(CreateView):
-    model=Topic
+
+class TopicCreate(LoginRequiredMixin, CreateView):
+    model = Topic
     template_name = 'topic_add.html'
     form_class = TopicForm
+    login_url = '/forum/accounts/login/'
+#    redirect_field_name = 'redirect_to'
+
     def form_valid(self, form):
         form.instance.creator = self.request.user
         form.instance.forum = get_object_or_404(Forum, id=self.kwargs['pk'])
         return super(TopicCreate, self).form_valid(form)
 
 
-class TopicUpdate(UpdateView):
+class TopicUpdate(LoginRequiredMixin, UpdateView):
     model = Topic
     template_name = 'topic_add.html'
     form_class = TopicForm
+    login_url = '/forum/accounts/login/'
 #    def form_valid(self, form):
 #        form.instance.creator = self.request.user
 #        form.instance.forum = get_object_or_404(Forum, id=self.kwargs['pk'])
 #        return super(TopicUpdate, self).form_valid(form)
 
 
-class TopicDelete(DeleteView):
+class TopicDelete(LoginRequiredMixin, DeleteView):
     model = Topic
     success_url = reverse_lazy('topic')
+    login_url = '/forum/accounts/login/'
 
 
+class PostCreate(LoginRequiredMixin, CreateView):
+    model = Post
+    template_name = 'post_add.html'
+    form_class = PostForm
+    login_url = '/forum/accounts/login/'
+
+    def get_success_url(self):
+        pk = self.kwargs['pk']
+        return ('/forum/topic/%s/posts' % pk)
+
+    def form_valid(self, form):
+        form.instance.creator = self.request.user
+        form.instance.topic = get_object_or_404(Topic, id=self.kwargs['pk'])
+        form.instance.forum = get_object_or_404(Forum, id=form.instance.topic.forum.id)
+        return super(PostCreate, self).form_valid(form)
 
 
+class PostUpdate(LoginRequiredMixin, UpdateView):
+    model = Post
+    template_name = 'post_edit.html'
+    form_class = PostForm
+    login_url = '/forum/accounts/login/'
+#    def form_valid(self, form):
+#        form.instance.creator = self.request.user
+#        form.instance.forum = get_object_or_404(Forum, id=self.kwargs['pk'])
+#        return super(TopicUpdate, self).form_valid(form)
 
 
+class PostDelete(LoginRequiredMixin, DeleteView):
+    model = Post
+    template_name = 'post_del.html'
+    login_url = '/forum/accounts/login/'
 
-
-
-
+    def get_success_url(self):
+        pk = self.kwargs['top_pk']
+        return reverse_lazy('post', kwargs={'pk': pk})
